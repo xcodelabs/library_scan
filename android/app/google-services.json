@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "382070038611",
-    "project_id": "cemp-library",
-    "storage_bucket": "cemp-library.appspot.com"
+    "project_number": "1077732752312",
+    "project_id": "cemp-library-53315",
+    "storage_bucket": "cemp-library-53315.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:382070038611:android:5ea0e7c8b878113e92e6a6",
+        "mobilesdk_app_id": "1:1077732752312:android:5e4e6342f6113bfa6c2d4d",
         "android_client_info": {
           "package_name": "com.xcodelabs.library_scan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "382070038611-2jhisusstos9og42dbtf4akifv3k5sg1.apps.googleusercontent.com",
+          "client_id": "1077732752312-q1htcalgsvctqshr7k9jfubmjud45p0r.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBRBU0uHRyCMPbZ1QcTTjRJ_YMm8zLJZpY"
+          "current_key": "AIzaSyAlJhkZ14644Kl33NZgVGHJoTPRH-Y_Gz0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "382070038611-2jhisusstos9og42dbtf4akifv3k5sg1.apps.googleusercontent.com",
+              "client_id": "1077732752312-q1htcalgsvctqshr7k9jfubmjud45p0r.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

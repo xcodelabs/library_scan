@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -16,9 +18,34 @@ class validator extends StatefulWidget {
 
 class _validatorState extends State<validator> {
   List user = [];
+  List id = [];
+  DatabaseReference db = FirebaseDatabase.instance.ref();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getuser();
+  }
+
+  getuser() {
+    db.child('USER').onValue.listen((event) {
+      user = id;
+      setState(() {
+        for (var sn in event.snapshot.children) {
+          user.add(userCard(
+              name: sn.child('NAME').value.toString(),
+              type: sn.child('TYPE').value.toString(),
+              dep: sn.child('DEP').value.toString(),
+              email: sn.child('EMAIL').value.toString(),
+              pass: sn.child('PASSWORD').value.toString(),
+              id: sn.key.toString()));
+        }
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(user);
     return SafeArea(
         child: Padding(
       padding: MediaQuery.of(context).viewInsets,
@@ -210,14 +237,17 @@ class _validatorState extends State<validator> {
                                   Fluttertoast.showToast(
                                       msg: 'Please fill the box');
                                 } else {
-                                  st(userCard(
-                                    name: name.text,
-                                    email: email.text,
-                                    pass: password.text,
-                                    id: '111111',
-                                    type: 'VD',
-                                    dep: Department.text,
-                                  ));
+                                  db.child('USER').push().update({
+                                    'NAME': name.text.trim(),
+                                    'EMAIL': email.text.trim(),
+                                    'PASSWORD': password.text.trim(),
+                                    'DEP': Department.text.trim(),
+                                    'TYPE': 'VD'
+                                  }).whenComplete(() {
+                                    Fluttertoast.showToast(
+                                        msg: 'New user is created');
+                                    user.clear();
+                                  });
                                   Navigator.pop(context);
                                 }
                               },
@@ -229,11 +259,5 @@ class _validatorState extends State<validator> {
                 );
               })));
         });
-  }
-
-  st(userCard userCard) {
-    setState(() {
-      user.add(userCard);
-    });
   }
 }

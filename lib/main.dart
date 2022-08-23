@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:library_scan/screen/home.dart';
 import 'package:library_scan/screen/login.dart';
 
-void main() {
-  Firebase.initializeApp();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(Library_scan());
 }
 

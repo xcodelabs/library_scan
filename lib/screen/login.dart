@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:library_scan/screen/home.dart';
 import 'package:library_scan/screen/primary.dart';
@@ -12,10 +13,17 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+
+  DatabaseReference database = FirebaseDatabase.instance.ref();
   bool passvis = true;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  bool btStatus = false; // to check button click working is completed
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
       backgroundColor: const Color(0xFFF9E5DE),
       body: SafeArea(
         child: Center(
@@ -64,22 +72,23 @@ class _LoginPageState extends State<LoginPage> {
                         )),
               ),
 
-              const SizedBox(
+              SizedBox(
                 height: 40.0,
               ),
 
               //email text field
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.white,
                     border: Border.all(color: Colors.black12),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: email,
                       decoration: InputDecoration(
                         labelText: 'Email',
                         border: InputBorder.none,
@@ -106,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 20.0),
                     child: TextField(
+                      controller: password,
                       obscureText: passvis,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -140,8 +150,54 @@ class _LoginPageState extends State<LoginPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: ((context) => primary())));
+                    if (email.text == '') {
+                      Fluttertoast.showToast(msg: 'Please Fill Email');
+                    } else if (password == '') {
+                      Fluttertoast.showToast(msg: 'Please Fill password');
+                    } else if (email.text != '' &&
+                        password.text != '' &&
+                        !btStatus) {
+                      _scaffoldkey.currentState!
+                          .showSnackBar(SnackBar(content: Text('Please wait')));
+                      btStatus = true;
+                      database
+                          .child('USER')
+                          .orderByChild('EMAIL')
+                          .equalTo(email.text.trim())
+                          .once()
+                          .then((value) {
+                        // Fluttertoast.showToast(msg: 'checking');
+                        if (value.snapshot.exists) {
+                          //Fluttertoast.showToast(msg: 'checking -1 ');
+                          for (var sn in value.snapshot.children) {
+                            //print(sn.child('PASSWORD').value);
+                            if (sn.child('PASSWORD').value ==
+                                password.text.trim()) {
+                              String name = sn.child('NAME').value.toString();
+                              _scaffoldkey.currentState!.showSnackBar(
+                                  SnackBar(content: Text('Welcome $name')));
+                              Navigator.pop(context);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: ((context) => primary())));
+                              btStatus = false;
+                            } else {
+                              Fluttertoast.showToast(msg: 'invalid Credential');
+                              btStatus = false;
+                            }
+                          }
+                        } else {
+                          Fluttertoast.showToast(msg: 'invalid Credential');
+                          btStatus = false;
+                        }
+                      }).onError((error, stackTrace) {
+                        btStatus = false;
+                        print(error);
+                      });
+                    } else if (btStatus) {
+                    } else {
+                      Fluttertoast.showToast(msg: 'Unexpected Error');
+                      btStatus = false;
+                    }
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
