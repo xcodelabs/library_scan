@@ -100,13 +100,13 @@ class _primaryState extends State<primary> {
                 height: 110,
                 child: Stack(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => validator())));
-                      },
-                      child: Positioned(
-                        left: 15,
+                    Positioned(
+                      left: 15,
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => validator())));
+                        },
                         child: Container(
                           width: 100,
                           height: 100,

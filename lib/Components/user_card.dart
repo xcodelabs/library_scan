@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -35,6 +36,9 @@ class _userCardState extends State<userCard> {
       required this.email,
       required this.pass,
       required this.id});
+
+  DatabaseReference db = FirebaseDatabase.instance.ref();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,7 +87,30 @@ class _userCardState extends State<userCard> {
               child: Text('Email              :  $email')),
           Positioned(
               bottom: 9, left: 20, child: Text('Password      :  $pass')),
-          Positioned(right: 20, top: 1, child: InkWell(child: Icon(Icons.edit)))
+          Positioned(
+              right: 20,
+              top: 1,
+              child: Row(
+                children: [
+                  if (type != 'AD')
+                    InkWell(
+                      onTap: () {
+                        if (type != 'AD') {
+                          setState(() {
+                            type = 'AD';
+                          });
+                          db.child('USER').child(id).child('TYPE').set('AD');
+                        }
+                      },
+                      child: Icon(Icons.swap_vert),
+                    ),
+                  InkWell(
+                      onTap: () {
+                        db.child('USER').child(id).remove();
+                      },
+                      child: Icon(Icons.delete)),
+                ],
+              ))
         ],
       ),
     );

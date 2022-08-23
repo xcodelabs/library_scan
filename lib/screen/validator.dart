@@ -29,7 +29,10 @@ class _validatorState extends State<validator> {
 
   getuser() {
     db.child('USER').onValue.listen((event) {
-      user = id;
+      setState(() {
+        user = [];
+      });
+
       setState(() {
         for (var sn in event.snapshot.children) {
           user.add(userCard(
@@ -66,7 +69,11 @@ class _validatorState extends State<validator> {
                   color: Colors.white,
                   child: Row(
                     children: [
-                      Icon(Icons.arrow_back_sharp),
+                      InkWell(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Icon(Icons.arrow_back_sharp)),
                       Text('    VALIDATOR PANEL',
                           style: GoogleFonts.secularOne(
                               fontSize: 23.0,
@@ -86,10 +93,12 @@ class _validatorState extends State<validator> {
             Positioned(
                 top: 70,
                 width: MediaQuery.of(context).size.width - 20,
-                height: MediaQuery.of(context).size.height - 70,
-                child: ListView(
-                  children: [for (int i = 0; i < user.length; i++) user[i]],
-                ))
+                height: MediaQuery.of(context).size.height - 120,
+                child: ListView.builder(
+                    itemCount: user.length,
+                    itemBuilder: ((context, index) {
+                      return user[index];
+                    })))
           ],
         ),
       )),
