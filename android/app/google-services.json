@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "382070038611",
+    "project_id": "cemp-library",
+    "storage_bucket": "cemp-library.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:382070038611:android:5ea0e7c8b878113e92e6a6",
+        "android_client_info": {
+          "package_name": "com.xcodelabs.library_scan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "382070038611-2jhisusstos9og42dbtf4akifv3k5sg1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRBU0uHRyCMPbZ1QcTTjRJ_YMm8zLJZpY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "382070038611-2jhisusstos9og42dbtf4akifv3k5sg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

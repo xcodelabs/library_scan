@@ -39,6 +39,7 @@ class _homeState extends State<home> {
       _scanBarcode = barcodeScanRes;
       TextEditingController tx = TextEditingController();
       tx.text = _scanBarcode;
+      showResult(tx);
       final defaultPinTheme = PinTheme(
         width: 60,
         height: 64,
@@ -46,73 +47,6 @@ class _homeState extends State<home> {
         decoration: BoxDecoration(color: Color.fromRGBO(159, 132, 193, 0.8)),
       );
       final focusNode = FocusNode();
-      showModalBottomSheet(
-          context: context,
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return Container(
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50))),
-              height: 260,
-              child: Stack(
-                fit: StackFit.expand,
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: 10,
-                    child: Text('Book Code Scanned\nSucessfully',
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.varelaRound(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF2F1500),
-                        )),
-                  ),
-                  Positioned(
-                    top: 120,
-                    child: SizedBox(
-                      width: 300,
-                      height: 30,
-                      child: Pinput(
-                        controller: tx,
-                        length: 8,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                      top: 70,
-                      child: Text(
-                        'Please verify the scanned code \ncorrect with book code ',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 12),
-                      )),
-                  Positioned(
-                      top: 180,
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                                width: 200,
-                                height: 60,
-                                child: Image.asset('asset/ok.png')),
-                          ),
-                          Container(
-                              width: 200,
-                              height: 60,
-                              child: Image.asset('asset/cancel.png'))
-                        ],
-                      ))
-                ],
-              ),
-            );
-          });
     });
   }
 
@@ -122,8 +56,17 @@ class _homeState extends State<home> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+        '#ff6666',
+        'Cancel',
+        true,
+        ScanMode.BARCODE,
+      );
       print(barcodeScanRes);
+      TextEditingController tx = TextEditingController();
+      tx.text = barcodeScanRes;
+      if (barcodeScanRes != '-1') {
+        showResult(tx);
+      }
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -186,7 +129,8 @@ class _homeState extends State<home> {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: InkWell(
                   onTap: () {
-                    scanQR();
+                    scanBarcodeNormal();
+                    //  scanQR();
                   },
                   child: Container(
                     padding: const EdgeInsets.all(20.0),
@@ -221,5 +165,79 @@ class _homeState extends State<home> {
         ),
       ),
     );
+  }
+
+  showResult(TextEditingController tx) {
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(50),
+                      topRight: Radius.circular(50))),
+              height: 260,
+              child: Stack(
+                fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    top: 10,
+                    child: Text('Book Code Scanned\nSucessfully',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.varelaRound(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF2F1500),
+                        )),
+                  ),
+                  Positioned(
+                    top: 120,
+                    child: SizedBox(
+                      width: 300,
+                      height: 30,
+                      child: Pinput(
+                        controller: tx,
+                        length: 8,
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      top: 70,
+                      child: Text(
+                        'Please verify the scanned code \ncorrect with book code ',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 12),
+                      )),
+                  Positioned(
+                      top: 180,
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                width: 200,
+                                height: 60,
+                                child: Image.asset('asset/ok.png')),
+                          ),
+                          Container(
+                              width: 200,
+                              height: 60,
+                              child: Image.asset('asset/cancel.png'))
+                        ],
+                      ))
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

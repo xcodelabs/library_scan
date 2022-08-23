@@ -38,6 +38,10 @@ dependencies:
   google_fonts: ^3.0.1
   flutter_swiper_view: ^1.1.8
   pinput: ^2.2.12
+  searchfield: ^0.6.9
+  fluttertoast: ^8.0.9
+  firebase_core: ^1.21.0
+  firebase_database: ^9.1.2
 
 dev_dependencies:
   flutter_test:

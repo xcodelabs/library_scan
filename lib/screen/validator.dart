@@ -4,6 +4,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:library_scan/Components/user_card.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class validator extends StatefulWidget {
   const validator({Key? key}) : super(key: key);
@@ -16,165 +18,222 @@ class _validatorState extends State<validator> {
   List user = [];
   @override
   Widget build(BuildContext context) {
+    print(user);
     return SafeArea(
-        child: Scaffold(
-            body: Container(
-      color: Color.fromARGB(255, 245, 245, 245),
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Stack(
-        fit: StackFit.expand,
-        alignment: Alignment.center,
-        children: [
-          Positioned(
-              top: 1,
-              child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.white,
-                child: Row(
-                  children: [
-                    Icon(Icons.arrow_back_sharp),
-                    Text('    VALIDATOR PANEL',
-                        style: GoogleFonts.secularOne(
-                            fontSize: 23.0,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black)),
-                    Expanded(
-                        child: IconButton(
-                      alignment: Alignment.centerRight,
-                      icon: Icon(Icons.add),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            backgroundColor: Colors.transparent,
-                            builder: (BuildContext context) {
-                              return Container(
-                                child: ListView(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 20.0),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                            labelText: 'Name',
-                                            border: InputBorder.none,
-                                            hintText: 'Enter user name',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 20.0),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                            labelText: 'Department',
-                                            border: InputBorder.none,
-                                            hintText: 'Enter user department',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 20.0),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                            labelText: 'Email',
-                                            border: InputBorder.none,
-                                            hintText: 'Enter user email',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        border:
-                                            Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.only(left: 20.0),
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                            labelText: 'Password',
-                                            border: InputBorder.none,
-                                            hintText: 'Enter user password',
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      },
-                    ))
-                  ],
-                ),
-              )),
-          Positioned(
-              top: 70,
-              width: MediaQuery.of(context).size.width - 20,
-              height: MediaQuery.of(context).size.height - 70,
-              child: ListView(
-                children: [
-                  userCard(
-                    name: 'Sabarinath',
-                    email: 'Sabarinath5604@gmail.com',
-                    pass: 'Sab**********',
-                    id: '123455',
-                    type: 'AD',
-                    dep: 'Computer Science',
+        child: Padding(
+      padding: MediaQuery.of(context).viewInsets,
+      child: Scaffold(
+          body: Container(
+        color: Color.fromARGB(255, 245, 245, 245),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Stack(
+          fit: StackFit.expand,
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+                top: 1,
+                child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  color: Colors.white,
+                  child: Row(
+                    children: [
+                      Icon(Icons.arrow_back_sharp),
+                      Text('    VALIDATOR PANEL',
+                          style: GoogleFonts.secularOne(
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black)),
+                      Expanded(
+                          child: IconButton(
+                        alignment: Alignment.centerRight,
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          createUser();
+                        },
+                      ))
+                    ],
                   ),
-                  userCard(
-                    name: 'Sabarinath',
-                    email: 'Sabarinath5604@gmail.com',
-                    pass: 'Sab**********',
-                    id: '123455',
-                    type: 'VD',
-                    dep: 'Computer Science',
+                )),
+            Positioned(
+                top: 70,
+                width: MediaQuery.of(context).size.width - 20,
+                height: MediaQuery.of(context).size.height - 70,
+                child: ListView(
+                  children: [for (int i = 0; i < user.length; i++) user[i]],
+                ))
+          ],
+        ),
+      )),
+    ));
+  }
+
+  createUser() {
+    TextEditingController name = TextEditingController(),
+        email = TextEditingController(),
+        Department = TextEditingController(),
+        password = TextEditingController();
+    bool admin = false;
+    List list = [
+      'Computer Science',
+      'Mechanical',
+      'Civil',
+      'Electronics and Communication',
+      'Electrical and Electronics'
+    ];
+
+    return showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: StatefulBuilder(builder: ((context, state) {
+                return SafeArea(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(20)),
+                        color: Colors.white),
+                    height: 400,
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Create New User',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              textBaseline: TextBaseline.alphabetic),
+                        ),
+                        Container(
+                            margin: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 120),
+                            height: 3,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                                color: Colors.blueGrey)),
+                        Container(
+                          width: 200,
+                          //   height: 60,
+                          margin: EdgeInsets.only(
+                              left: 30, right: 30, bottom: 4, top: 20),
+                          color: Colors.white,
+                          child: TextField(
+                              controller: name,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Name',
+                              )),
+                        ),
+                        Container(
+                          width: 200,
+                          //  height: 60,
+                          margin: EdgeInsets.only(
+                              left: 30, right: 30, bottom: 4, top: 4),
+                          color: Colors.white,
+                          child: SearchField(
+                              controller: Department,
+                              suggestions: list
+                                  .map((e) => SearchFieldListItem(e))
+                                  .toList(),
+                              searchInputDecoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Department',
+                              )),
+                        ),
+                        Container(
+                          width: 200,
+                          //  height: 60,
+                          margin: EdgeInsets.only(
+                              left: 30, right: 30, bottom: 4, top: 4),
+                          color: Colors.white,
+                          child: TextField(
+                              controller: email,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Email',
+                              )),
+                        ),
+                        Container(
+                          width: 200,
+                          //  height: 60,
+                          margin: EdgeInsets.only(
+                              left: 30, right: 30, bottom: 4, top: 4),
+                          color: Colors.white,
+                          child: TextField(
+                              controller: password,
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                labelText: 'Password',
+                              )),
+                        ),
+                        /*   Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Checkbox(
+                              value: admin,
+                              onChanged: (value) {
+                                setState() {
+                                  if (admin) {
+                                    admin = false;
+                                  } else {
+                                    admin = true;
+                                  }
+                                }
+                              },
+                            ),
+                            Text('To make as Admin')
+                          ],
+                        ),*/
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: 100, left: 100, bottom: 10, top: 5),
+                          width: 120,
+                          height: 40,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (name.text == '' &&
+                                    email.text == '' &&
+                                    password.text == '' &&
+                                    Department.text == '') {
+                                  Fluttertoast.showToast(
+                                      msg: 'Please fill the box');
+                                } else {
+                                  st(userCard(
+                                    name: name.text,
+                                    email: email.text,
+                                    pass: password.text,
+                                    id: '111111',
+                                    type: 'VD',
+                                    dep: Department.text,
+                                  ));
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: Text('Create new user')),
+                        ),
+                      ],
+                    ),
                   ),
-                  userCard(
-                    name: 'Sabarinath',
-                    email: 'Sabarinath5604@gmail.com',
-                    pass: 'Sab**********',
-                    id: '123455',
-                    type: 'VD',
-                    dep: 'Computer Science',
-                  ),
-                  userCard(
-                    name: 'Sabarinath',
-                    email: 'Sabarinath5604@gmail.com',
-                    pass: 'Sab**********',
-                    id: '123455',
-                    type: 'AD',
-                    dep: 'Computer Science',
-                  )
-                ],
-              ))
-        ],
-      ),
-    )));
+                );
+              })));
+        });
+  }
+
+  st(userCard userCard) {
+    setState(() {
+      user.add(userCard);
+    });
   }
 }
