@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_swiper_view/flutter_swiper_view.dart';
 import 'package:library_scan/Components/user_card.dart';
 import 'package:library_scan/screen/home.dart';
+import 'package:library_scan/screen/survey.dart';
 import 'package:library_scan/screen/validator.dart';
 
 class primary extends StatefulWidget {
@@ -136,29 +137,35 @@ class _primaryState extends State<primary> {
                     ),
                     Positioned(
                       left: 130,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        alignment: Alignment.center,
-                        decoration: decoration,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 70,
-                              height: 80,
-                              child: Image.network(
-                                  'https://www.clipartkey.com/mpngs/m/158-1580691_feedback-survey-icon-png.png'),
-                            ),
-                            Text(
-                              "Edit Survey",
-                              style: GoogleFonts.secularOne(
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF2F1500),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => survey())));
+                        },
+                        child: Container(
+                          width: 100,
+                          height: 100,
+                          alignment: Alignment.center,
+                          decoration: decoration,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 70,
+                                height: 80,
+                                child: Image.network(
+                                    'https://www.clipartkey.com/mpngs/m/158-1580691_feedback-survey-icon-png.png'),
                               ),
-                            ),
-                          ],
+                              Text(
+                                "Edit Survey",
+                                style: GoogleFonts.secularOne(
+                                  fontSize: 12.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF2F1500),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
